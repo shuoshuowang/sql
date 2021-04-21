@@ -14,10 +14,11 @@ SC(SId,CId,score)
 题目
 
 1、 查询Student表中的所有记录的Sname、Ssex和Class列。
-'''
+```
 select Sname, Ssex, Class from Student
+```
 
-'''
+
 2、 查询教师所有的单位即不重复的Depart列。
 '''
 '''
