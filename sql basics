@@ -13,18 +13,30 @@ SC(SId,CId,score)
 --SId 学生编号,CId 课程编号,score 分数
 
 1、查询“01”课程比“02”课程成绩高的所有学生的学号；
-'''
-SELECT SId FROM SC
-HAVING CId  
+select sid from student s where (select score form sc where sid = s.sid and cid = "01") > (select score form sc where sid = s.sid and cid = "02")
 
-'''
 2、查询平均成绩大于60分的同学的学号和平均成绩；
-3、查询所有d同学的学号、姓名、选课数、总成绩
+select sid avg(score) from sc group by sid having avg(score) > 60
+
+3、查询所有同学的学号、姓名、选课数、总成绩
+select sid, sname, count(cid), sum(score) from sc group by sid
+
 4、查询姓“李”的老师的个数；
+select count(*) from teacher where tname like "li%"
+
 5、查询没学过“张三”老师课的同学的学号、姓名；
+select sid, sname from student where sid = (select sid from sc where cid not in (select cid from course where tid = (select tid from teacher where tname = "zhangsan")))
+
 6、查询学过编号“01”并且也学过编号“02”课程的同学的学号、姓名；
+select sid, sname from student where sid = (select sid from sc where cid in ("01", "02"))
+
 7、查询学过“张三”老师所教的课的同学的学号、姓名；
+
+select sid, sname from student where sid = (select sid from sc where cid in (select cid from course where tid = (select tid from teacher where tname = "zhangsan")))
+
 8、查询课程编号“01”的成绩比课程编号“02”课程低的所有同学的学号、姓名；
+select sid, sname from student  where sid = (select sid from sc where (select score from sc where cid = "01") < (select score from sc where cid = "02"))
+
 9、查询所有课程成绩小于60分的同学的学号、姓名；
 10、查询没有学全所有课的同学的学号、姓名；
 11、查询至少有一门课与学号为“01”的同学所学相同的同学的学号和姓名；
